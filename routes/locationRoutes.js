@@ -8,6 +8,8 @@ const router = express.Router();
 //   console.log(req.params);
 //   next();
 // });
+router.route('/get-stats').get(locationController.getLocationStats);
+router.route('/deleteAll').get(locationController.deleteAll);
 
 router
   .route('/')

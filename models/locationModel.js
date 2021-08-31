@@ -7,6 +7,11 @@ const locationSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
+  state: {
+    type: String,
+    required: [true, 'State is Required'],
+    trim: true
+  },
   description: {
     type: String,
     required: [true, 'Description is required']
@@ -24,6 +29,10 @@ const locationSchema = new mongoose.Schema({
     trim: true
   },
   images: [String],
+  rating: {
+    type: Number,
+    default: 4.5
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

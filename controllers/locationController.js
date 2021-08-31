@@ -88,3 +88,52 @@ exports.deleteLocation = async (req, res) => {
     });
   }
 };
+
+exports.getLocationStats = async (req, res) => {
+  try {
+    const stats = await Location.aggregate([
+      {
+        $match: { rating: { $gte: 4 } }
+      },
+      {
+        $group: {
+          _id: { $toUpper: '$state' },
+          numLocation: { $sum: 1 },
+          avgPrice: { $avg: '$price' },
+          maxPrice: { $max: '$price' },
+          minPrice: { $min: '$price' }
+        }
+      },
+      {
+        $sort: { avgPrice: -1 }
+      }
+      // {
+      // $match: { _id: { $ne: 'DELHI' } }
+      // }
+    ]);
+    res.status(200).json({
+      status: 'success',
+      data: stats
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Fail',
+      error
+    });
+  }
+};
+
+exports.deleteAll = async (req, res) => {
+  try {
+    await Location.deleteMany();
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Fail',
+      error
+    });
+  }
+};
